@@ -36,6 +36,7 @@ func performRequest(t *testing.T, r http.Handler, method, path string, reader io
 	if cookie != "" {
 		req.Header.Set("Cookie", cookie)
 	}
+	req.Header.Set("Content-Type", "application/json")
 	assert.Nil(t, err)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)

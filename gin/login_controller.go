@@ -9,8 +9,8 @@ import (
 )
 
 type Login struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `form:"email" json:"email"`
+	Password string `form:"password" json:"password"`
 }
 
 const SessionUser = "user"
@@ -38,9 +38,10 @@ func (l *LoginController) Me(c *gin.Context) {
 func (l *LoginController) Login(c *gin.Context) {
 	var login Login
 
-	if err := c.ShouldBindJSON(&login); err != nil {
+	if err := c.ShouldBind(&login); err != nil {
 		return
 	}
+
 	if login.Email == "john@gmail.com" && login.Password == "good" {
 		session := sessions.Default(c)
 		session.Set(SessionUser, login.Email)
