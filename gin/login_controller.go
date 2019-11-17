@@ -31,7 +31,12 @@ func (l *LoginController) LoginService() app.LoginService {
 }
 
 func (l *LoginController) Me(c *gin.Context) {
-	c.JSON(http.StatusOK, nil)
+
+	session := sessions.Default(c)
+	user := session.Get(SessionUser)
+	c.JSON(http.StatusOK, gin.H{
+		"user_id": user,
+	})
 	return
 }
 
@@ -46,7 +51,7 @@ func (l *LoginController) Login(c *gin.Context) {
 		session := sessions.Default(c)
 		session.Set(SessionUser, login.Email)
 		session.Save()
-		c.JSON(http.StatusOK, nil)
+		c.JSON(http.StatusOK, login)
 		return
 	}
 
